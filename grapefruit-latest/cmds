@@ -1,0 +1,2 @@
+docker build -t grapefruit-latest .
+docker run --rm -it -p 31337:31337 --name grapefruit-latest grapefruit-latest

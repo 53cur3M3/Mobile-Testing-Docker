@@ -1,0 +1,3 @@
+docker build -t grapefruit-frida16 .
+docker run --rm -it -p 31337:31337 --name grapefruit-frida16 grapefruit-frida16
+igf -h 0.0.0.0

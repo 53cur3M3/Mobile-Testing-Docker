@@ -1,0 +1,40 @@
+# Use Ubuntu 24.04 as the base image
+FROM ubuntu:24.04
+
+# Set environment variables to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required packages: sudo, python3, python3-venv, pip, and dependencies for frida-tools
+RUN apt-get update && apt-get install -y \
+    sudo \
+    python3 \
+    python3-venv \
+    python3-pip \
+    build-essential \
+    libffi-dev \
+    libssl-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create the frida user with a home directory
+RUN useradd -m -s /bin/bash frida
+
+# Grant frida passwordless sudo privileges
+RUN echo "frida ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/frida \
+    && chmod 0440 /etc/sudoers.d/frida
+
+# Switch to the frida user
+USER frida
+WORKDIR /home/frida
+
+# Create and activate a Python virtual environment
+RUN python3 -m venv env
+
+# Install frida-tools 13.2.0 and objection in the virtual environment
+RUN /home/frida/env/bin/pip install --no-cache-dir frida-tools==13.2.0 objection
+
+# Create a .bashrc to automatically source the virtual environment
+RUN echo "source /home/frida/env/bin/activate" >> /home/frida/.bashrc
+
+# Set the entrypoint to launch a Bash shell
+ENTRYPOINT ["/bin/bash"]
