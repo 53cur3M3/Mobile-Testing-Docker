@@ -1,0 +1,7 @@
+docker build -t cocoapods-env .
+
+docker run -it cocoapods-env
+
+pod trunk info FirebaseSessions
+
+

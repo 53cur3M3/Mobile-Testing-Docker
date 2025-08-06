@@ -1,0 +1,48 @@
+# Use Ubuntu 24.04 as the base image for Linux compatibility
+FROM ubuntu:24.04
+
+# Set working directory
+WORKDIR /app
+
+# Set UTF-8 encoding for CocoaPods
+ENV LANG=en_US.UTF-8
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    locales \
+    ruby-full \
+    build-essential \
+    python3 \
+    python3-pip \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+
+# Generate en_US.UTF-8 locale
+RUN locale-gen en_US.UTF-8
+
+# Set UTF-8 encoding for CocoaPods
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# Install RubyGems and CocoaPods
+RUN gem install cocoapods -v 1.15.2
+
+# Install Python dependencies for your script
+#RUN pip3 install requests beautifulsoup4
+
+# Create a non-root user for running CocoaPods
+RUN useradd -m -s /bin/bash cocoapods
+USER cocoapods
+
+# Update CocoaPods Specs repository as non-root user
+RUN pod repo update
+
+# Set entrypoint to bash for interactive use or running pod commands
+ENTRYPOINT ["/bin/bash", "-c"]
+
+# Default command (can be overridden)
+CMD ["bash"]
