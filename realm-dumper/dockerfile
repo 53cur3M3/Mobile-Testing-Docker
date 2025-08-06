@@ -1,0 +1,15 @@
+# Use the official Node.js image
+FROM node:18
+
+# Set working directory
+WORKDIR /app
+
+# Copy the script into the container
+COPY dump-realm.js .
+
+# Install Realm package
+RUN npm install realm
+
+# Add an entry point to process Realm files in /realm
+ENTRYPOINT ["node", "dump-realm.js"]
+
