@@ -1,0 +1,9 @@
+docker build -t bagbak .
+
+docker run --rm -it --device=/dev/bus/usb/001/013 -v /var/run/usbmuxd:/var/run/usbmuxd -v /var/lib/lockdown:/var/lib/lockdown -v "$PWD/ipa":/home/node/ipa --user=$(id -u):$(getent group plugdev | cut -d: -f3) --name bagbak bagbak
+
+export SSH_USERNAME=mobile
+export SSH_PASSWORD=<password>
+export SSH_PORT=22
+
+bagbak <app-id>
