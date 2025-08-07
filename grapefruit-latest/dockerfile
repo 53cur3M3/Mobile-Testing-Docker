@@ -20,8 +20,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-#RUN npm install -g igf
-RUN npm install -g igf@0.12.3 frida@16.5.4
+RUN npm install -g igf
 
 # Create the frida user with a home directory
 RUN useradd -m -s /bin/bash frida
@@ -38,7 +37,7 @@ WORKDIR /home/frida
 RUN python3 -m venv env
 
 # Install frida-tools 13.2.0 and objection in the virtual environment
-RUN /home/frida/env/bin/pip install --no-cache-dir frida-tools==13.2.0 objection
+RUN /home/frida/env/bin/pip install --no-cache-dir frida-tools objection
 
 # Create a .bashrc to automatically source the virtual environment
 RUN echo "source /home/frida/env/bin/activate" >> /home/frida/.bashrc
