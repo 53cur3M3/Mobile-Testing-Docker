@@ -1,0 +1,14 @@
+docker build -t libimobiledevice .
+docker run --rm -it --device=/dev/bus/usb/001/009 --name libimobiledevice libimobiledevice
+# Utilize host usbmuxd:
+docker run --rm -it --device=/dev/bus/usb/001/009 -v /var/run/usbmuxd:/var/run/usbmuxd -v /var/lib/lockdown:/var/lib/lockdown --user=$(id -u):$(getent group plugdev | cut -d: -f3) --name libimobiledevice libimobiledevice
+
+
+$ lsusb | grep Apple
+Bus 001 Device 009: ID 05ac:12a8 Apple, Inc. iPhone 5/5C/5S/6/SE/7/8/X/XR
+
+# /dev/bus/usb/<bus-id>/<device-id>
+$ ls /dev/bus/usb/001/009 
+/dev/bus/usb/001/009
+
+
